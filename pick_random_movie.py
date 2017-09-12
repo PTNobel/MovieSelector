@@ -1,17 +1,18 @@
 #!/usr/bin/python3
 
-from typing import List, Optional, Callable
-import sys
+from typing import List, Callable
+import argparse
 from numpy.random import chisquare
-from random import gauss
+from random import gauss, randint
 
 # def chisquare(df: int, shape: Any=...) -> float: ...
 
 GetRandomIndex = Callable[[int], int]
 
 NUMBER_OF_DRAWS_TO_ATTEMPT: int = 50
-DISABLE_READ_IN_MOVIES: bool = False
+
 ABS_Z_GENERATOR: GetRandomIndex = lambda length: int(abs(gauss(0, length/3)))
+EQUAL_CHANCE_GENERATOR: GetRandomIndex = lambda length: randint(0, length - 1)
 CHISQUARE_GENERATOR: GetRandomIndex = lambda length: int(chisquare(length//2))
 RANDOM_NUMBER_GENERATION_RULE: GetRandomIndex = ABS_Z_GENERATOR
 
@@ -23,7 +24,7 @@ def getRandomIndex(length: int) -> int:
 
     # Let's keep track of how many times we've drawn numbers.
     tries: int = 0
-    # If we have two great an index, let's try again.
+    # If we have too great an index, let's try again.
     while randomNumber >= length:
         # Draw a new number...
         randomNumber = RANDOM_NUMBER_GENERATION_RULE(length)
@@ -37,15 +38,17 @@ def getRandomIndex(length: int) -> int:
     return randomNumber
 
 
-def processargs(): ...
+def processargs() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Randomly selects a movie.")
+    parser.add_argument(
+            '--input-file',
+            help='The input file to pick movies from.',
+            default="movie_list.txt")
+
+    return parser.parse_args()
 
 
-def readInMovies(fileName: Optional[str] = None) -> List[str]:
-    if DISABLE_READ_IN_MOVIES:
-        return ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
-    if fileName is None:
-        fileName = "./movie_list.txt"
-
+def readInMovies(fileName: str) -> List[str]:
     fd = open(fileName)
     output: List[str] = fd.readlines()
     fd.close()
@@ -53,16 +56,19 @@ def readInMovies(fileName: Optional[str] = None) -> List[str]:
     return output
 
 
-def main(args: List[str]) -> None:
-        # TODO implement arg processing etc.
+# def main(args: List[str]) -> None:
+def main() -> None:
+    args = processargs()
 
     # Get the list of movies
-    movies = readInMovies()
+    movies = readInMovies(args.input_file)
+
+    assert len(movies) > 0, "Please add movies to the list."
 
     index = getRandomIndex(len(movies))
 
-    print(movies[index])
+    print(movies[index][:-1])
 
 
 if __name__ == '__main__':
-    main(sys.argv)
+    main()
