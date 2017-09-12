@@ -4,6 +4,7 @@
 from typing import List, Callable
 from io import TextIOWrapper
 
+import sys
 import argparse
 from numpy.random import chisquare
 from random import gauss, randint
@@ -50,8 +51,12 @@ def processargs() -> argparse.Namespace:
         default="movie_list.txt",
         type=open,
     )
-
-    return parser.parse_args()
+    try:
+        return parser.parse_args()
+    except FileNotFoundError:
+        print("Movie list not found", file=sys.stderr)
+        parser.parse_args(["-h"])
+        exit(1)
 
 
 def readInMovies(fd: TextIOWrapper) -> List[str]:
