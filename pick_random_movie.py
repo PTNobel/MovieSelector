@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 
+# Imports solely for typing
 from typing import List, Callable
+from io import TextIOWrapper
+
 import argparse
 from numpy.random import chisquare
 from random import gauss, randint
@@ -41,15 +44,17 @@ def getRandomIndex(length: int) -> int:
 def processargs() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Randomly selects a movie.")
     parser.add_argument(
-            '--input-file',
-            help='The input file to pick movies from.',
-            default="movie_list.txt")
+        '-i',
+        '--input-file',
+        help='The input file to pick movies from [default: movie_list.txt]',
+        default="movie_list.txt",
+        type=open,
+    )
 
     return parser.parse_args()
 
 
-def readInMovies(fileName: str) -> List[str]:
-    fd = open(fileName)
+def readInMovies(fd: TextIOWrapper) -> List[str]:
     output: List[str] = fd.readlines()
     fd.close()
 
