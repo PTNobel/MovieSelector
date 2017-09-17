@@ -4,7 +4,6 @@ Secret of Mulan
 Baby Driver
 Interstellar
 Hansel and Gretel: Witch Hunters
-Lego Batman
 Happy Feet
 American Pie
 Step Brothers
@@ -12,3 +11,4 @@ Other Guys
 Batman Begins
 Pulp Fiction
 Zindagi Na Milegi Dobara
+Black Swan
