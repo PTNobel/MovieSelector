@@ -66,7 +66,6 @@ def readInMovies(fd: TextIOWrapper) -> List[str]:
     return output
 
 
-# def main(args: List[str]) -> None:
 def main() -> None:
     args = processargs()
 
