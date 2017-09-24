@@ -16,9 +16,10 @@ GetRandomIndex = Callable[[int], int]
 NUMBER_OF_DRAWS_TO_ATTEMPT: int = 50
 
 ABS_Z_GENERATOR: GetRandomIndex = lambda length: int(abs(gauss(0, length/3)))
+ABS_Z_GENERATOR_SMALL_STDDEV: GetRandomIndex = lambda length: int(abs(gauss(0, length/2)))
 EQUAL_CHANCE_GENERATOR: GetRandomIndex = lambda length: randint(0, length - 1)
 CHISQUARE_GENERATOR: GetRandomIndex = lambda length: int(chisquare(length//2))
-RANDOM_NUMBER_GENERATION_RULE: GetRandomIndex = ABS_Z_GENERATOR
+RANDOM_NUMBER_GENERATION_RULE: GetRandomIndex = ABS_Z_GENERATOR_SMALL_STDDEV
 
 
 def getRandomIndex(length: int) -> int:
